@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="wordPress" parallel="false">
+  <parameter name="url" value="https://automationfc.wordpress.com/wp-admin/" />
+    <listeners>
+		<listener class-name="commons.MethodListener" />
+		<listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+		<listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+	</listeners>
+	<test name="Run on chrome">
+		<parameter name="browser" value="chrome" />
+		<classes>
+			<class name="com.wordpress.posts.Admin_01_Create_View_Edit_Delete" />
+		</classes>
+	</test>
+</suite> 
