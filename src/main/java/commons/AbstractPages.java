@@ -520,9 +520,6 @@ public abstract class AbstractPages {
 	public void upLoadMultipleFiles(WebDriver driver, String... fileNames) {
 
 		String filePath = System.getProperty("user.dir")+ "/src/test/resources/" + getDirectorySlash("uploadFiles");
-		System.out.println("*************************");
-		System.out.println(filePath);
-		System.out.println("*************************");
 		String fullFileName = "";
 
 		for (String file : fileNames) {

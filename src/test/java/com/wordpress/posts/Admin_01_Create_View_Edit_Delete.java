@@ -15,6 +15,7 @@ import pageObjects.wordpress.admin.PostsPageObjects;
 import pageObjects.wordpress.user.HomePageObjects;
 import pageObjects.wordpress.user.PostDetailPageObjects;
 import pageObjects.wordpress.user.SearchResultPageObjects;
+import testdata.PostData;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -25,21 +26,6 @@ import org.openqa.selenium.support.ui.Sleeper;
 import org.testng.annotations.AfterClass;
 
 public class Admin_01_Create_View_Edit_Delete extends AbstractTest {
-
-	int fakeNumber = randomData();
-	String featureImageName = "img1.png";
-	String newPostTitle = "New_post_title" + fakeNumber;
-	String newPostContent = "New_post_content" + fakeNumber;
-	String newPostTags = "new_tag_" + fakeNumber;
-	String newPostCategory = "NEW LIVE CODING";
-	String authorPost = "Automation FC";
-	String today = getWordpressToday();
-
-	String editPostTitle = "Edit";
-	String totalPostTitle = newPostTitle + editPostTitle;
-	String editPostContent = "Edit_post_content" + fakeNumber;
-	String editPostTag = "Edit_post_tag" + fakeNumber;
-	String editPostCategory = "EDIT LIVE CODING";
 
 	@Parameters({ "browser", "url" })
 	@BeforeClass
@@ -69,91 +55,125 @@ public class Admin_01_Create_View_Edit_Delete extends AbstractTest {
 
 	@Test(description = "Create New Post aOke solved problemt Admin Page")
 	public void TC_01_Create_New_Post_At_Admin_page() {
-		// Go to Post Page
+		log.info("Post Page Admin - Step 1: Go to Post Page");
 		dashboardPage.openMenuPageByName(driver, "Posts");
 		postAdminPage = PageGeneratorManager.getPostAdminPage(driver);
 
+		log.info("Post Page Admin - Step 2: Click to Add Button");
 		newEditPostPage = postAdminPage.clickToAddNewButton();
 
-		newEditPostPage.inputToPostTitleTextbox(newPostTitle);
+		log.info("Post Page Admin - Step 3: Input Title to Post");
+		newEditPostPage.inputToPostTitleTextbox(PostData.newPostTitle);
 
-		newEditPostPage.inputToPostContentTextbox(newPostContent);
+		log.info("Post Page Admin - Step 4: Input content to Post");
+		newEditPostPage.inputToPostContentTextbox(PostData.newPostContent);
 
+		log.info("Post Page Admin - Step 5: Click to Tab");
 		newEditPostPage.clickToPostTab();
 
+		log.info("Post Page Admin - Step 6: Click to open Categories section");
 		newEditPostPage.clickToOpenDetailMenuByText("Categories");
 
-		newEditPostPage.selectCategoryCheckbox(newPostCategory);
+		log.info("Post Page Admin - Step 7: input new Categories");
+		newEditPostPage.selectCategoryCheckbox(PostData.newPostCategory);
 
+		log.info("Post Page Admin - Step 8: Click to close Categories section");
 		newEditPostPage.clickToCloseDetailMenuByText("Categories");
 
+		log.info("Post Page Admin - Step 9: Click to open Tags section");
 		newEditPostPage.clickToOpenDetailMenuByText("Tags");
 
-		newEditPostPage.inputToTagTextbox(newPostTags);
+		log.info("Post Page Admin - Step 10: Input to Post tag");
+		newEditPostPage.inputToTagTextbox(PostData.newPostTags);
 
-		verifyTrue(newEditPostPage.isTagInputSuccess(newPostTags));
+		log.info("Post Page Admin - Step 11: Verify input tag success");
+		verifyTrue(newEditPostPage.isTagInputSuccess(PostData.newPostTags));
 
+		log.info("Post Page Admin - Step 12: Click to close Tags section");
 		newEditPostPage.clickToCloseDetailMenuByText("Tags");
 
+		log.info("Post Page Admin - Step 13: Click to open Featured image");
 		newEditPostPage.clickToOpenDetailMenuByText("Featured image");
 
+		log.info("Post Page Admin - Step 14: Click to setFeatured image");
 		newEditPostPage.clickToSetFeatureImageLink();
 
+		log.info("Post Page Admin - Step 15: Click to open Categories section");
 		newEditPostPage.clickToUploadFileTab();
 
-		newEditPostPage.upLoadMultipleFiles(driver, featureImageName);
+		log.info("Post Page Admin - Step 16: Upload file");
+		newEditPostPage.upLoadMultipleFiles(driver, PostData.featureImageName);
 
-		verifyTrue(newEditPostPage.areFileUploadedDisplayed(driver, featureImageName));
+		log.info("Post Page Admin - Step 17: Verify file upload success");
+		verifyTrue(newEditPostPage.areFileUploadedDisplayed(driver, PostData.featureImageName));
 
+		log.info("Post Page Admin - Step 18: Click to set feature image");
 		newEditPostPage.clickToSetFeatureImageButton();
 
-		// Manual thỉnh thoảng cũng bị lỗi
-		// verifyTrue(newEditPostPage.isFeatureImageUploadSuccess(featureImageName));
+		log.info("Post Page Admin - Step 19: Verify Image Upload Success");
+		//verifyTrue(newEditPostPage.isFeatureImageUploadSuccess(PostData.featureImageName));
 
+		log.info("Post Page Admin - Step 20: Click to Publish button");
 		newEditPostPage.clickToPublishButton();
 
+		log.info("Post Page Admin - Step 21: Verify Publish button displayed");
 		verifyTrue(newEditPostPage.isConfirmPublishMessageDisplayed());
 
+		log.info("Post Page Admin - Step 22: Click to Double check Publish button");
 		newEditPostPage.clickToDoubleCheckPublishButton();
 
+		log.info("Post Page Admin - Step 23: Verify Publish message dispayed");
 		verifyTrue(newEditPostPage.isMessagePostPublishedDisplayed("Post published"));
-		// Search Post at Admin Page
-		dashboardPage = newEditPostPage.openAdminLoggedPage(driver);
 
+		log.info("Post Page Admin - Step 24: Open Post page");
+		dashboardPage = newEditPostPage.openAdminLoggedPage(driver);
 		dashboardPage.openMenuPageByName(driver, "Posts");
 		postAdminPage = PageGeneratorManager.getPostAdminPage(driver);
 
-		postAdminPage.inputToSearchTextbox(newPostTitle);
+		log.info("Post Page Admin - Step 25: Input to search textbox");
+		postAdminPage.inputToSearchTextbox(PostData.newPostTitle);
 
+		log.info("Post Page Admin - Step 26: Click to seach button");
 		postAdminPage.clickToSearchPostButton();
 
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", newPostTitle);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", authorPost);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", newPostCategory);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", newPostTags);
+		log.info("Post Page Admin - Step 27: Verify post data display on table");
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", PostData.newPostTitle);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", PostData.authorPost);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", PostData.newPostCategory);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", PostData.newPostTags);
 
-		// Chuyển qua trang user
+		log.info("User Page - Step 28: Open User page");
 		homeUserPage = postAdminPage.openEndUserUserPage(driver);
-		verifyTrue(homeUserPage.isPostDisplayedOnLatestPost(driver, newPostCategory, newPostTitle, today));
-		// Chạy không ổn định
-		verifyTrue(homeUserPage.isPostImageDisplayedAtPostTitleName(driver, newPostTitle, featureImageName));
 
-		postDetailPage = homeUserPage.clickToPostDetailWithTitleName(driver, newPostTitle);
+		log.info("User Page - Step 29: Verify post displayed");
+		verifyTrue(homeUserPage.isPostDisplayedOnLatestPost(driver, PostData.newPostCategory, PostData.newPostTitle,
+				PostData.today));
 
-		verifyTrue(postDetailPage.isTitleNameDisplayed(newPostTitle));
-		verifyTrue(postDetailPage.isCategoryNameDisplayed(newPostCategory));
-		verifyTrue(postDetailPage.isImageDisplayed(featureImageName));
-		verifyTrue(postDetailPage.isContentDisplayed(newPostContent));
-		verifyTrue(postDetailPage.isDateCreatedDisplayed(today));
-		verifyTrue(postDetailPage.isAuthorDisplayed(authorPost));
-		verifyTrue(postDetailPage.isTagDisplayed(newPostTags));
+		log.info("User Page - Step 30: Verify Image displayed");
+		verifyTrue(homeUserPage.isPostImageDisplayedAtPostTitleName(driver, PostData.newPostTitle,
+				PostData.featureImageName));
 
-		// Search post at end user
-		searchResultPage = postDetailPage.inputToSearchTextboxAtEndUserPage(driver, newPostTitle);
+		log.info("User Page - Step 31: Click to Detail page");
+		postDetailPage = homeUserPage.clickToPostDetailWithTitleName(driver, PostData.newPostTitle);
 
-		verifyTrue(searchResultPage.isPostTitleDisplayedOnHeader(newPostTitle));
-		verifyTrue(searchResultPage.isPostDisplayedOnLatestPost(driver, newPostCategory, newPostTitle, today));
-		verifyTrue(searchResultPage.isPostImageDisplayedAtPostTitleName(driver, newPostTitle, featureImageName));
+		log.info("User Page - Step 32: Verify Infor of post displayed");
+		verifyTrue(postDetailPage.isTitleNameDisplayed(PostData.newPostTitle));
+		verifyTrue(postDetailPage.isCategoryNameDisplayed(PostData.newPostCategory));
+		verifyTrue(postDetailPage.isImageDisplayed(PostData.featureImageName));
+		verifyTrue(postDetailPage.isContentDisplayed(PostData.newPostContent));
+		verifyTrue(postDetailPage.isDateCreatedDisplayed(PostData.today));
+		verifyTrue(postDetailPage.isAuthorDisplayed(PostData.authorPost));
+		verifyTrue(postDetailPage.isTagDisplayed(PostData.newPostTags));
+
+		log.info("User Page - Step 33: Search new post");
+		searchResultPage = postDetailPage.inputToSearchTextboxAtEndUserPage(driver, PostData.newPostTitle);
+
+		log.info("User Page - Step 34: Verify post displayed");
+		verifyTrue(searchResultPage.isPostTitleDisplayedOnHeader(PostData.newPostTitle));
+		verifyTrue(searchResultPage.isPostDisplayedOnLatestPost(driver, PostData.newPostCategory, PostData.newPostTitle,
+				PostData.today));
+		verifyTrue(searchResultPage.isPostImageDisplayedAtPostTitleName(driver, PostData.newPostTitle,
+				PostData.featureImageName));
 	}
 
 	/**
@@ -161,130 +181,178 @@ public class Admin_01_Create_View_Edit_Delete extends AbstractTest {
 	 */
 	@Test(description = "Edit new post at Admin page")
 	public void TC_02_Edit_New_Post_At_Admin_page() {
-		// Navigate to Admin Page
+		log.info("Post Page Admin - Step 1: Go to Post Page");
 		dashboardPage = searchResultPage.openAdminLoggedPage(driver);
-
-		// Go to post page
 		dashboardPage.openMenuPageByName(driver, "Posts");
 		postAdminPage = PageGeneratorManager.getPostAdminPage(driver);
 
-		// Search Post at Admin Page
-		postAdminPage.inputToSearchTextbox(newPostTitle);
+		log.info("Post Page Admin - Step 2: Input new post title to search textbox");
+		postAdminPage.inputToSearchTextbox(PostData.newPostTitle);
 
+		log.info("Post Page Admin - Step 3: Click to seach button");
 		postAdminPage.clickToSearchPostButton();
 
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", newPostTitle);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", authorPost);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", newPostCategory);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", newPostTags);
+		log.info("Post Page Admin - Step 4: Verify post data display on table");
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", PostData.newPostTitle);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", PostData.authorPost);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", PostData.newPostCategory);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", PostData.newPostTags);
 
-		// Click To Post Detail
-		newEditPostPage = postAdminPage.clickToPostDetailByTitleName(newPostTitle);
+		log.info("Post Page Admin - Step 5: Click to post detail");
+		newEditPostPage = postAdminPage.clickToPostDetailByTitleName(PostData.newPostTitle);
 
-		// Edit Post
+		log.info("Post Page Admin - Step 6: Click to Tab");
 		newEditPostPage.clickToPostTab();
-		newEditPostPage.clickToOpenDetailMenuByText("Categories");
-		newEditPostPage.deSelectCategoryCheckbox(newPostCategory);
-		newEditPostPage.selectCategoryCheckbox(editPostCategory);
-		newEditPostPage.clickToCloseDetailMenuByText("Categories");
-		newEditPostPage.clickToOpenDetailMenuByText("Tags");
-		newEditPostPage.clickToDeleteTagButton(newPostTags);
-		newEditPostPage.inputToTagTextbox(editPostTag);
-		verifyTrue(newEditPostPage.isTagInputSuccess(editPostTag));
-		newEditPostPage.editToPostTitleTextbox(editPostTitle);
-		newEditPostPage.editToPostContentTextbox(editPostContent);
 
+		log.info("Post Page Admin - Step 7: Click to open Categories section");
+		newEditPostPage.clickToOpenDetailMenuByText("Categories");
+
+		log.info("Post Page Admin - Step 8: deselect new Categories");
+		newEditPostPage.deSelectCategoryCheckbox(PostData.newPostCategory);
+
+		log.info("Post Page Admin - Step 9: select new Categories");
+		newEditPostPage.selectCategoryCheckbox(PostData.editPostCategory);
+
+		log.info("Post Page Admin - Step 10: Click to close Categories section");
+		newEditPostPage.clickToCloseDetailMenuByText("Categories");
+
+		log.info("Post Page Admin - Step 11: Click to open Tags section");
+		newEditPostPage.clickToOpenDetailMenuByText("Tags");
+
+		log.info("Post Page Admin - Step 12: Click to delete tags");
+		newEditPostPage.clickToDeleteTagButton(PostData.newPostTags);
+
+		log.info("Post Page Admin - Step 13: Click to create new edit tag");
+		newEditPostPage.inputToTagTextbox(PostData.editPostTag);
+
+		log.info("Post Page Admin - Step 14: Verify edit tag is added success");
+		verifyTrue(newEditPostPage.isTagInputSuccess(PostData.editPostTag));
+
+		log.info("Post Page Admin - Step 15: Click to edit title");
+		newEditPostPage.editToPostTitleTextbox(PostData.editPostTitle);
+
+		log.info("Post Page Admin - Step 16: Click to edit content");
+		newEditPostPage.editToPostContentTextbox(PostData.editPostContent);
+
+		log.info("Post Page Admin - Step 17: Click to update button");
 		newEditPostPage.clickToUpdateButton();
 
+		log.info("Post Page Admin - Step 18: Verify updated message displayed");
 		verifyTrue(newEditPostPage.isMessagePostPublishedDisplayed("Post updated"));
 
+		log.info("Post Page Admin - Step 19: Verify Update button is clicked");
 		newEditPostPage.checkIfUpdateButtonClickAgain();
 
+		log.info("Post Page Admin - Step 20: Verify update button is disabled");
 		verifyTrue(newEditPostPage.isUpdateButtonDisable());
 
-		// Search Post at Admin Page
+		log.info("Post Page Admin - Step 21: Open Post page");
 		dashboardPage = newEditPostPage.openAdminLoggedPage(driver);
-
 		dashboardPage.openMenuPageByName(driver, "Posts");
 		postAdminPage = PageGeneratorManager.getPostAdminPage(driver);
 
-		postAdminPage.inputToSearchTextbox(editPostTitle);
+		log.info("Post Page Admin - Step 22: Input to search textbox");
+		postAdminPage.inputToSearchTextbox(PostData.totalPostTitle);
 
+		log.info("Post Page Admin - Step 23: Click to seach button");
 		postAdminPage.clickToSearchPostButton();
 
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", totalPostTitle);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", authorPost);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", editPostCategory);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", editPostTag);
+		log.info("Post Page Admin - Step 24: Verify post data display on table");
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", PostData.totalPostTitle);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", PostData.authorPost);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", PostData.editPostCategory);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", PostData.editPostTag);
 
-		// Chuyển qua trang user
+		log.info("User Page - Step 25: Open User page");
 		homeUserPage = postAdminPage.openEndUserUserPage(driver);
-		verifyTrue(homeUserPage.isPostDisplayedOnLatestPost(driver, editPostCategory, totalPostTitle, today));
-		// Chạy không ổn định
-		verifyTrue(homeUserPage.isPostImageDisplayedAtPostTitleName(driver, totalPostTitle, featureImageName));
 
-		postDetailPage = homeUserPage.clickToPostDetailWithTitleName(driver, totalPostTitle);
+		log.info("User Page - Step 26: Verify post displayed");
+		verifyTrue(homeUserPage.isPostDisplayedOnLatestPost(driver, PostData.editPostCategory, PostData.totalPostTitle,
+				PostData.today));
 
-		verifyTrue(postDetailPage.isTitleNameDisplayed(totalPostTitle));
-		verifyTrue(postDetailPage.isCategoryNameDisplayed(editPostCategory));
-		verifyTrue(postDetailPage.isImageDisplayed(featureImageName));
-		verifyTrue(postDetailPage.isContentDisplayed(editPostContent));
-		verifyTrue(postDetailPage.isDateCreatedDisplayed(today));
-		verifyTrue(postDetailPage.isAuthorDisplayed(authorPost));
-		verifyTrue(postDetailPage.isTagDisplayed(editPostTag));
+		log.info("User Page - Step 27: Verify Image displayed");
+		verifyTrue(homeUserPage.isPostImageDisplayedAtPostTitleName(driver, PostData.totalPostTitle,
+				PostData.featureImageName));
 
-		// Search post at end user
-		searchResultPage = postDetailPage.inputToSearchTextboxAtEndUserPage(driver, totalPostTitle);
+		log.info("User Page - Step 28: Click to Detail page");
+		postDetailPage = homeUserPage.clickToPostDetailWithTitleName(driver, PostData.totalPostTitle);
 
-		verifyTrue(searchResultPage.isPostTitleDisplayedOnHeader(totalPostTitle));
-		verifyTrue(searchResultPage.isPostDisplayedOnLatestPost(driver, editPostCategory, totalPostTitle, today));
-		verifyTrue(searchResultPage.isPostImageDisplayedAtPostTitleName(driver, totalPostTitle, featureImageName));
+		log.info("User Page - Step 29: Verify Infor of post displayed");
+		verifyTrue(postDetailPage.isTitleNameDisplayed(PostData.totalPostTitle));
+		verifyTrue(postDetailPage.isCategoryNameDisplayed(PostData.editPostCategory));
+		verifyTrue(postDetailPage.isImageDisplayed(PostData.featureImageName));
+		verifyTrue(postDetailPage.isContentDisplayed(PostData.editPostContent));
+		verifyTrue(postDetailPage.isDateCreatedDisplayed(PostData.today));
+		verifyTrue(postDetailPage.isAuthorDisplayed(PostData.authorPost));
+		verifyTrue(postDetailPage.isTagDisplayed(PostData.editPostTag));
+
+		log.info("User Page - Step 30: Search new post");
+		searchResultPage = postDetailPage.inputToSearchTextboxAtEndUserPage(driver, PostData.totalPostTitle);
+
+		log.info("User Page - Step 31: Verify post displayed");
+		verifyTrue(searchResultPage.isPostTitleDisplayedOnHeader(PostData.totalPostTitle));
+		verifyTrue(searchResultPage.isPostDisplayedOnLatestPost(driver, PostData.editPostCategory,
+				PostData.totalPostTitle, PostData.today));
+		verifyTrue(searchResultPage.isPostImageDisplayedAtPostTitleName(driver, PostData.totalPostTitle,
+				PostData.featureImageName));
 	}
 
 	@Test(description = "Delete new post at Admin Page")
 	public void TC_03_Delete_New_Post_At_Admin_page() {
-		// Navigate to Admin Page
+		log.info("Post Page Admin - Step 1: Go to Post Page");
 		dashboardPage = searchResultPage.openAdminLoggedPage(driver);
-
-		// Go to post page
 		dashboardPage.openMenuPageByName(driver, "Posts");
 		postAdminPage = PageGeneratorManager.getPostAdminPage(driver);
 
-		// Search Post at Admin Page
-		postAdminPage.inputToSearchTextbox(totalPostTitle);
+		log.info("Post Page Admin - Step 2: Input edit post title to search textbox");
+		postAdminPage.inputToSearchTextbox(PostData.totalPostTitle);
 
+		log.info("Post Page Admin - Step 3: Click to seach button");
 		postAdminPage.clickToSearchPostButton();
 
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", totalPostTitle);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", authorPost);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", editPostCategory);
-		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", editPostTag);
+		log.info("Post Page Admin - Step 4: Verify post data display on table");
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("title", "1", PostData.totalPostTitle);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("author", "1", PostData.authorPost);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("categories", "1", PostData.editPostCategory);
+		postAdminPage.isValueDisplayedAtColumnIDByRowNumber("tags", "1", PostData.editPostTag);
 
-		// Click To Post Detail
-		newEditPostPage = postAdminPage.clickToPostDetailByTitleName(totalPostTitle);
+		log.info("Post Page Admin - Step 5: Click to post detail");
+		newEditPostPage = postAdminPage.clickToPostDetailByTitleName(PostData.totalPostTitle);
 
+		log.info("Post Page Admin - Step 6: Click to Move to Trash button");
 		postAdminPage = newEditPostPage.clickToMoveToTrashButton();
 
+		log.info("Post Page Admin - Step 7: Verify Move to Trash success");
 		verifyTrue(postAdminPage.isMoveToTrashMessageDisplayed());
 
-		// Search Post at Admin Page
-		postAdminPage.inputToSearchTextbox(totalPostTitle);
+		log.info("Post Page Admin - Step 8: Input to search textbox");
+		postAdminPage.inputToSearchTextbox(PostData.totalPostTitle);
 
+		log.info("Post Page Admin - Step 9: Click to seach button");
 		postAdminPage.clickToSearchPostButton();
-		// Displayed
+
+		log.info("Post Page Admin - Step 10: Verify No Founded msg displayed");
 		verifyTrue(postAdminPage.isNoPostFoundMessageDisplayed());
 
-		// Chuyển qua trang user
+		log.info("User Page - Step 11: Open User page");
 		homeUserPage = postAdminPage.openEndUserUserPage(driver);
-		verifyFalse(homeUserPage.isPostDisplayedOnLatestPost(driver, editPostCategory, totalPostTitle, today));
-		// Chạy không ổn định
-		verifyFalse(homeUserPage.isPostImageDisplayedAtPostTitleName(driver, totalPostTitle, featureImageName));
 
-		// Search post at end user
-		searchResultPage = postDetailPage.inputToSearchTextboxAtEndUserPage(driver, totalPostTitle);
+		log.info("User Page - Step 12: Verify post is not displayed");
+		verifyFalse(homeUserPage.isPostDisplayedOnLatestPost(driver, PostData.editPostCategory, PostData.totalPostTitle,
+				PostData.today));
 
-		verifyFalse(searchResultPage.isPostDisplayedOnLatestPost(driver, editPostCategory, totalPostTitle, today));
-		verifyFalse(searchResultPage.isPostImageDisplayedAtPostTitleName(driver, totalPostTitle, featureImageName));
+		log.info("User Page - Step 13: Verify image is not displayed");
+		verifyFalse(homeUserPage.isPostImageDisplayedAtPostTitleName(driver, PostData.totalPostTitle,
+				PostData.featureImageName));
+
+		log.info("User Page - Step 14: Search new post");
+		searchResultPage = postDetailPage.inputToSearchTextboxAtEndUserPage(driver, PostData.totalPostTitle);
+
+		log.info("User Page - Step 15: Verify post is not displayed");
+		verifyFalse(searchResultPage.isPostDisplayedOnLatestPost(driver, PostData.editPostCategory,
+				PostData.totalPostTitle, PostData.today));
+		verifyFalse(searchResultPage.isPostImageDisplayedAtPostTitleName(driver, PostData.totalPostTitle,
+				PostData.featureImageName));
 	}
 
 	@AfterClass(alwaysRun = true)

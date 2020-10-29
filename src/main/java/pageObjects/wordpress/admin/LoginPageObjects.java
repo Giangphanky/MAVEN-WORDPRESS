@@ -13,24 +13,30 @@ public class LoginPageObjects extends AbstractPages{
 	}
 
 	public void inputToEmailTextbox(String value) {
-		waitElementVisible(driver, LoginPageUI.emailTextbox);
-		sendKeysToElement(driver, LoginPageUI.emailTextbox, value);
+		waitElementVisible(driver, LoginPageUI.EMAIL_TEXTBOX);
+		sendKeysToElement(driver, LoginPageUI.EMAIL_TEXTBOX, value);
 	}
 	
 	public void inputToPasswordTextbox(String value) {
-		waitElementVisible(driver, LoginPageUI.passwordTextbox);
-		sendKeysToElement(driver, LoginPageUI.passwordTextbox, value);
+		waitElementVisible(driver, LoginPageUI.PASSWORD_TEXTBOX);
+		sendKeysToElement(driver, LoginPageUI.PASSWORD_TEXTBOX, value);
 	}
 
 	public DashboardPageObjects clickToLoginButton() {
-		waitElementClickable(driver, LoginPageUI.LoginButton);
-		clickToElement(driver, LoginPageUI.LoginButton);
+		waitElementClickable(driver, LoginPageUI.LOGIN_BUTTON);
+		clickToElement(driver, LoginPageUI.LOGIN_BUTTON);
 		return new DashboardPageObjects(driver);
 	}
 
 	public void clickToContinueButton() {
-		waitElementClickable(driver, LoginPageUI.ContinueButton);
-		clickToElement(driver, LoginPageUI.ContinueButton);
+		waitElementClickable(driver, LoginPageUI.CONTINUE_BUTTON);
+		clickToElement(driver, LoginPageUI.CONTINUE_BUTTON);
+	}
+
+	public boolean isErrorMessageDisplayed(String message) {
+		System.out.println(castRestParameter(LoginPageUI.DYNAMIC_ERROR_MESSAGE, message));
+		waitElementVisible(driver, LoginPageUI.DYNAMIC_ERROR_MESSAGE, message);
+		return isElementDisplayed(driver, LoginPageUI.DYNAMIC_ERROR_MESSAGE, message);
 	}
 
 }
